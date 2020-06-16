@@ -22,12 +22,16 @@ router.post('/users/login', async (req, res) => {
       req.body.email,
       req.body.password
     );
+
+    if (user === null) {
+      return res.status(400).send({ error: 'Invalid credentials' });
+    }
+
     const token = await user.generateAuthToken();
 
     res.send({ user, token });
   } catch (e) {
-    console.log(e);
-    res.status(400).send();
+    res.status(500).send({ error: 'Internal Server Error', details: e });
   }
 });
 
