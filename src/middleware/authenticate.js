@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
-const auth = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
     const decoded = jwt.verify(token, 'cloudiary-secret-2020');
     const user = await User.findOne({
       _id: decoded._id,
-      'tokens.token': token
-    }).lean(); //search a user with this ID and this token from his array of tokens
+      'tokens.token': token,
+    }); //search a user with this ID and this token from his array of tokens
 
     if (!user) {
       throw new Error();
@@ -22,4 +22,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+module.exports = authenticate;
