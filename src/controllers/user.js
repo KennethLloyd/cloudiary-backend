@@ -4,7 +4,7 @@ const logIn = async (req, res) => {
   try {
     const user = await User.findByCredentials(
       req.body.email,
-      req.body.password
+      req.body.password,
     );
 
     if (user === null) {
@@ -13,10 +13,9 @@ const logIn = async (req, res) => {
 
     const token = await user.generateAuthToken();
 
-    res.send({ user, token });
+    return res.send({ user, token });
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ error: 'Internal Server Error' });
+    return res.status(500).send({ error: 'Internal Server Error' });
   }
 };
 
@@ -33,25 +32,23 @@ const signUp = async (req, res) => {
     await newUser.save();
     const token = await newUser.generateAuthToken();
 
-    res.status(201).send({ user: newUser, token });
+    return res.status(201).send({ user: newUser, token });
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ error: 'Internal Server Error' });
+    return res.status(500).send({ error: 'Internal Server Error' });
   }
 };
 
 const logOut = async (req, res) => {
   try {
-    //remove the current token from the list of tokens to avoid logging out in other devices
+    // remove the current token from the list of tokens to avoid logging out in other devices
     req.user.tokens = req.user.tokens.filter(
-      token => token.token !== req.token
+      (token) => token.token !== req.token,
     );
 
     await req.user.save();
 
     res.send({ message: 'Logged out' });
   } catch (e) {
-    console.log(e);
     res.status(500).send({ error: 'Internal Server Error' });
   }
 };
@@ -64,7 +61,6 @@ const logOutAllDevices = async (req, res) => {
 
     res.send({ message: 'Logged out on on all devices' });
   } catch (e) {
-    console.log(e);
     res.status(500).send({ error: 'Internal Server Error' });
   }
 };
@@ -72,8 +68,8 @@ const logOutAllDevices = async (req, res) => {
 const editProfile = async (req, res) => {
   const allowedUpdates = ['firstName', 'lastName', 'email', 'password'];
   const updates = Object.keys(req.body);
-  const isValidOperation = updates.every(update =>
-    allowedUpdates.includes(update)
+  const isValidOperation = updates.every((update) =>
+    allowedUpdates.includes(update),
   );
 
   if (!isValidOperation) {
@@ -81,14 +77,13 @@ const editProfile = async (req, res) => {
   }
 
   try {
-    updates.map(update => (req.user[update] = req.body[update]));
+    updates.map((update) => (req.user[update] = req.body[update]));
 
     await req.user.save();
 
-    res.send(req.user);
+    return res.send(req.user);
   } catch (e) {
-    console.log(e);
-    res.status(500).send({ error: 'Internal Server Error' });
+    return res.status(500).send({ error: 'Internal Server Error' });
   }
 };
 
@@ -98,7 +93,6 @@ const deleteAccount = async (req, res) => {
 
     res.send(req.user);
   } catch (e) {
-    console.log(e);
     res.status(400).send({ error: 'Internal Server Error' });
   }
 };

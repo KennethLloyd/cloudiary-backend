@@ -8,7 +8,7 @@ const authenticate = async (req, res, next) => {
     const user = await User.findOne({
       _id: decoded._id,
       'tokens.token': token,
-    }); //search a user with this ID and this token from his array of tokens
+    }); // search a user with this ID and this token from his array of tokens
 
     if (!user) {
       throw new Error();

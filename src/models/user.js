@@ -8,12 +8,12 @@ const userSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     lastName: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     email: {
       type: String,
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
         if (!validator.isEmail(value)) {
           throw new Error('Email is invalid');
         }
-      }
+      },
     },
     password: {
       type: String,
@@ -36,39 +36,39 @@ const userSchema = new mongoose.Schema(
         if (value.toLowerCase().includes('password')) {
           throw new Error('Password not secure');
         }
-      }
+      },
     },
     tokens: [
       {
         token: {
           type: String,
-          required: true
-        }
-      }
-    ]
+          required: true,
+        },
+      },
+    ],
   },
   {
-    timestamps: true //adds createdAt and updatedAt for each new entry
-  }
+    timestamps: true, // adds createdAt and updatedAt for each new entry
+  },
 );
 
 // Custom instance function (not arrow fxn since we will use 'this')
-userSchema.methods.generateAuthToken = async function() {
+userSchema.methods.generateAuthToken = async function () {
   const user = this;
 
   const token = jwt.sign({ _id: user._id.toString() }, 'cloudiary-secret-2020');
 
-  user.tokens = [...user.tokens, { token }]; //add token object to array of objects of tokens
+  user.tokens = [...user.tokens, { token }]; // add token object to array of objects of tokens
   await user.save();
 
   return token;
 };
 
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
   const user = this;
-  const userObject = user.toObject(); //get raw data without mongoose data and fxns for saving
+  const userObject = user.toObject(); // get raw data without mongoose data and fxns for saving
 
-  //cannot do this in mongoose instance
+  // cannot do this in mongoose instance
   delete userObject.password;
   delete userObject.tokens;
 
@@ -87,13 +87,12 @@ userSchema.statics.findByCredentials = async (email, password) => {
 
   if (!isMatch) {
     return null;
-  } else {
-    return user;
   }
+  return user;
 };
 
 // Hash plain text password before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   const user = this;
 
   if (user.isModified('password')) {
