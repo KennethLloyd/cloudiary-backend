@@ -4,15 +4,21 @@ const auth = require('../middleware/auth');
 const router = new express.Router();
 
 router.post('/users', async (req, res) => {
-  const user = new User(req.body);
-
   try {
-    await user.save();
-    const token = await user.generateAuthToken();
+    const user = await User.findOne({ email: req.body.email }).lean();
 
-    res.status(201).send({ user, token });
+    if (user) {
+      return res.status(400).send({ error: 'Email already exists' });
+    }
+
+    const newUser = new User(req.body);
+
+    await newUser.save();
+    const token = await newUser.generateAuthToken();
+
+    res.status(201).send({ user: newUser, token });
   } catch (e) {
-    res.status(400).send(e);
+    res.status(500).send({ error: 'Internal Server Error', details: e });
   }
 });
 
@@ -22,12 +28,16 @@ router.post('/users/login', async (req, res) => {
       req.body.email,
       req.body.password
     );
+
+    if (user === null) {
+      return res.status(400).send({ error: 'Invalid credentials' });
+    }
+
     const token = await user.generateAuthToken();
 
     res.send({ user, token });
   } catch (e) {
-    console.log(e);
-    res.status(400).send();
+    res.status(500).send({ error: 'Internal Server Error', details: e });
   }
 });
 
@@ -65,7 +75,7 @@ router.get('/users/me', auth, async (req, res) => {
 });
 
 router.patch('/users/me', auth, async (req, res) => {
-  const allowedUpdates = ['name', 'email', 'password'];
+  const allowedUpdates = ['firstName', 'lastName', 'email', 'password'];
   const updates = Object.keys(req.body);
   const isValidOperation = updates.every(update =>
     allowedUpdates.includes(update)
