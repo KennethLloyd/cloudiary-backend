@@ -15,6 +15,7 @@ const logIn = async (req, res) => {
 
     return res.send({ user, token });
   } catch (e) {
+    console.log(e);
     return res.status(500).send({ error: 'Internal Server Error' });
   }
 };
