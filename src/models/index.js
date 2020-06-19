@@ -1,5 +1,9 @@
 const User = require('./user');
+const Mood = require('./mood');
+const Activity = require('./activity');
 
 module.exports = {
-  User
+  User,
+  Mood,
+  Activity,
 };
