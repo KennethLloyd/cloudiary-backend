@@ -5,7 +5,7 @@ const { ObjectId } = mongoose.Schema.Types;
 const entrySchema = mongoose.Schema(
   {
     entryDate: {
-      type: String,
+      type: Date,
       required: true,
     },
     title: {
@@ -25,10 +25,8 @@ const entrySchema = mongoose.Schema(
     },
     activities: [
       {
-        activity: {
-          type: ObjectId,
-          ref: 'Activity',
-        },
+        type: ObjectId,
+        ref: 'Activity',
       },
     ],
     owner: {

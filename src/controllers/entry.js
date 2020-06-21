@@ -17,8 +17,39 @@ const addEntry = async (req, res) => {
 };
 
 const getEntries = async (req, res) => {
+  const filter = {
+    owner: req.user._id,
+  };
+  const projection = null;
+  const options = {};
+
+  if (req.query.from && req.query.to) {
+    filter.entryDate = {
+      $gte: req.query.from,
+      $lte: req.query.to,
+    };
+  }
+
+  if (req.query.sortBy) {
+    let sortOrder = 'asc';
+
+    if (
+      req.query.sortOrder &&
+      ['asc', 'desc'].includes(req.query.sortOrder.toLowerCase())
+    ) {
+      sortOrder = req.query.sortOrder.toLowerCase();
+    }
+
+    options.sort = {
+      [req.query.sortBy]: sortOrder,
+    };
+  }
+
   try {
-    const entries = await Entry.find({});
+    const entries = await Entry.find(filter, projection, options)
+      .populate('mood', 'name')
+      .populate('activities', 'name')
+      .exec();
 
     res.send(entries);
   } catch (e) {
