@@ -1,3 +1,4 @@
+const moment = require('moment');
 const { Entry } = require('../models');
 
 const addEntry = async (req, res) => {
@@ -28,6 +29,13 @@ const getEntries = async (req, res) => {
       $gte: req.query.from,
       $lte: req.query.to,
     };
+  } else {
+    const currentDate = moment().format('YYYY-MM');
+
+    filter.entryDate = {
+      $gte: `${currentDate}-01`,
+      $lte: `${currentDate}-31`,
+    };
   }
 
   if (req.query.sortBy) {
@@ -42,6 +50,10 @@ const getEntries = async (req, res) => {
 
     options.sort = {
       [req.query.sortBy]: sortOrder,
+    };
+  } else {
+    options.sort = {
+      entryDate: 'desc',
     };
   }
 
