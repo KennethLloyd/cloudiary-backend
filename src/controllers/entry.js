@@ -2,9 +2,10 @@ const { Entry } = require('../models');
 
 const addEntry = async (req, res) => {
   try {
-    const { entryDate, title, body, moodId, activityIds } = req.body;
-
-    const newEntry = new Entry({ entryDate, title, body, moodId, activityIds });
+    const newEntry = new Entry({
+      ...req.body,
+      owner: req.user._id,
+    });
 
     await newEntry.save();
 

@@ -18,12 +18,23 @@ const entrySchema = mongoose.Schema(
       default: '',
       trim: true,
     },
-    moodId: {
+    mood: {
       type: ObjectId,
       required: true,
+      ref: 'Mood',
     },
-    activityIds: {
-      type: Array,
+    activities: [
+      {
+        activity: {
+          type: ObjectId,
+          ref: 'Activity',
+        },
+      },
+    ],
+    owner: {
+      type: ObjectId,
+      required: true,
+      ref: 'User',
     },
   },
   { timestamps: true },
