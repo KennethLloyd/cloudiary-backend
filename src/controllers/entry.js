@@ -30,11 +30,12 @@ const getEntries = async (req, res) => {
       $lte: req.query.to,
     };
   } else {
-    const currentDate = moment().format('YYYY-MM');
+    const thisMonth = moment().format('YYYY-MM');
+    const nextMonth = moment().add(1, 'month').format('YYYY-MM');
 
     filter.entryDate = {
-      $gte: `${currentDate}-01`,
-      $lte: `${currentDate}-31`,
+      $gte: `${thisMonth}-01`,
+      $lte: `${nextMonth}-01`,
     };
   }
 
