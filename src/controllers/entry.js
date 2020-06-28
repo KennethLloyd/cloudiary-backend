@@ -30,11 +30,12 @@ const getEntries = async (req, res) => {
       $lte: req.query.to,
     };
   } else {
-    const currentDate = moment().format('YYYY-MM');
+    const thisMonth = moment().format('YYYY-MM');
+    const nextMonth = moment().add(1, 'month').format('YYYY-MM');
 
     filter.entryDate = {
-      $gte: `${currentDate}-01`,
-      $lte: `${currentDate}-31`,
+      $gte: `${thisMonth}-01`,
+      $lte: `${nextMonth}-01`,
     };
   }
 
@@ -70,9 +71,35 @@ const getEntries = async (req, res) => {
   }
 };
 
-const editEntry = async (req, res) => {};
+const editEntry = async (req, res) => {
+  try {
+    const options = {
+      new: true, // returns the updated document rather than the pre-update document
+    };
 
-const deleteEntry = async (req, res) => {};
+    const updatedEntry = await Entry.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      options,
+    );
+
+    res.status(200).send({ entry: updatedEntry });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
+const deleteEntry = async (req, res) => {
+  try {
+    const deletedEntry = await Entry.findByIdAndDelete(req.params.id);
+
+    res.status(200).send({ entry: deletedEntry });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
 
 module.exports = {
   addEntry,

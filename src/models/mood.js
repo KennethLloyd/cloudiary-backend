@@ -4,6 +4,12 @@ const moodSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
+    trim: true,
+  },
+  icon: {
+    type: String,
+    required: true,
+    trim: true,
   },
 });
 

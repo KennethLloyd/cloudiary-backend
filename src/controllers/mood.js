@@ -2,7 +2,10 @@ const { Mood } = require('../models');
 
 const addMood = async (req, res) => {
   try {
-    const newMood = new Mood({ name: req.body.name });
+    const newMood = new Mood({
+      name: req.body.name.toLowerCase(),
+      icon: req.body.icon,
+    });
 
     await newMood.save();
 
