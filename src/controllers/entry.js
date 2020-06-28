@@ -71,7 +71,24 @@ const getEntries = async (req, res) => {
   }
 };
 
-const editEntry = async (req, res) => {};
+const editEntry = async (req, res) => {
+  try {
+    const options = {
+      new: true, // returns the updated document rather than the pre-update document
+    };
+
+    const updatedEntry = await Entry.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      options,
+    );
+
+    res.status(200).send({ entry: updatedEntry });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
 
 const deleteEntry = async (req, res) => {};
 
