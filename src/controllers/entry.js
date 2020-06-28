@@ -90,7 +90,16 @@ const editEntry = async (req, res) => {
   }
 };
 
-const deleteEntry = async (req, res) => {};
+const deleteEntry = async (req, res) => {
+  try {
+    const deletedEntry = await Entry.findByIdAndDelete(req.params.id);
+
+    res.status(200).send({ entry: deletedEntry });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
 
 module.exports = {
   addEntry,
