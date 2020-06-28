@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb://127.0.0.1:27017/cloudiary",
+  "jwtSecret": "cloudiary-secret-2020"
+}

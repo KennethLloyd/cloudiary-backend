@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const userSchema = new mongoose.Schema(
   {
@@ -56,7 +57,7 @@ const userSchema = new mongoose.Schema(
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
 
-  const token = jwt.sign({ _id: user._id.toString() }, 'cloudiary-secret-2020');
+  const token = jwt.sign({ _id: user._id.toString() }, config.get('jwtSecret'));
 
   user.tokens = [...user.tokens, { token }]; // add token object to array of objects of tokens
   await user.save();
