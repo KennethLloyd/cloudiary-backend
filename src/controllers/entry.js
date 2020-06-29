@@ -3,6 +3,23 @@ const { Entry } = require('../models');
 
 const addEntry = async (req, res) => {
   try {
+    const entryDateOnly = req.body.entryDate.split(' ')[0];
+
+    const filter = {
+      owner: req.user._id,
+      entryDate: {
+        $gte: entryDateOnly,
+        $lt: moment(entryDateOnly).add(1, 'days').format('YYYY-MM-DD'),
+      },
+    };
+
+    const entries = await Entry.find(filter);
+    if (entries.length) {
+      return res
+        .status(400)
+        .send({ error: 'An entry for this date already exists' });
+    }
+
     const newEntry = new Entry({
       ...req.body,
       owner: req.user._id,
@@ -10,10 +27,10 @@ const addEntry = async (req, res) => {
 
     await newEntry.save();
 
-    res.status(201).send({ entry: newEntry });
+    return res.status(201).send({ entry: newEntry });
   } catch (e) {
     console.log(e);
-    res.status(500).send({ error: 'Internal Server Error' });
+    return res.status(500).send({ error: 'Internal Server Error' });
   }
 };
 
