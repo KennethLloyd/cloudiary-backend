@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://mangolloydie:12345aA!@kennethlloydcluster.l0bdb.mongodb.net/cloudiary?retryWrites=true&w=majority",
+  "jwtSecret": "cloudiary-production-2020"
+}
