@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
 const config = require('config');
 
-mongoose.connect(config.get('mongoURI'), {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+(async () => {
+  try {
+    await mongoose.connect(config.get('mongoURI'), {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+})();
