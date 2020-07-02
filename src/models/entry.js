@@ -5,7 +5,7 @@ const { ObjectId } = mongoose.Schema.Types;
 const entrySchema = mongoose.Schema(
   {
     entryDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     title: {
