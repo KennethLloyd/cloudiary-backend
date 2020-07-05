@@ -5,6 +5,7 @@ const addMood = async (req, res) => {
     const newMood = new Mood({
       name: req.body.name.toLowerCase(),
       icon: req.body.icon,
+      owner: req.user._id,
     });
 
     await newMood.save();

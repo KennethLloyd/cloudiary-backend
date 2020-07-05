@@ -2,7 +2,10 @@ const { Activity } = require('../models');
 
 const addActivity = async (req, res) => {
   try {
-    const newActivity = new Activity({ name: req.body.name });
+    const newActivity = new Activity({
+      name: req.body.name,
+      owner: req.user._id,
+    });
 
     await newActivity.save();
 
