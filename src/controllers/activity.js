@@ -15,7 +15,7 @@ const addActivity = async (req, res) => {
 
 const getActivities = async (req, res) => {
   try {
-    const activities = await Activity.find({});
+    const activities = await Activity.find({ owner: req.user._id });
 
     res.send(activities);
   } catch (e) {
@@ -66,7 +66,6 @@ const insertInitialActivities = async (userId) => {
 
   try {
     const activities = await Activity.create(initialActivities);
-    console.log(activities);
     return activities;
   } catch (e) {
     console.log(e);
