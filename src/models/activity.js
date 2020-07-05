@@ -1,11 +1,21 @@
 const mongoose = require('mongoose');
 
-const activitySchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const { ObjectId } = mongoose.Schema.Types;
+
+const activitySchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    owner: {
+      type: ObjectId,
+      required: true,
+      ref: 'User',
+    },
   },
-});
+  { timestamps: true },
+);
 
 const Activity = mongoose.model('Activity', activitySchema);
 

@@ -1,4 +1,6 @@
 const { User } = require('../models');
+const { insertInitialActivities } = require('./activity');
+const { insertInitialMoods } = require('./mood');
 
 const logIn = async (req, res) => {
   try {
@@ -32,6 +34,9 @@ const signUp = async (req, res) => {
 
     await newUser.save();
     const token = await newUser.generateAuthToken();
+
+    await insertInitialActivities(newUser._id);
+    await insertInitialMoods(newUser._id);
 
     return res.status(201).send({ user: newUser, token });
   } catch (e) {
