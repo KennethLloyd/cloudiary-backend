@@ -52,9 +52,32 @@ const deleteActivity = async (req, res) => {
   }
 };
 
+const insertInitialActivities = async (userId) => {
+  const initialActivities = [
+    { name: 'work', owner: userId },
+    { name: 'travel', owner: userId },
+    { name: 'friends', owner: userId },
+    {
+      name: 'family',
+      owner: userId,
+    },
+    { name: 'self', owner: userId },
+  ];
+
+  try {
+    const activities = await Activity.create(initialActivities);
+    console.log(activities);
+    return activities;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
+
 module.exports = {
   addActivity,
   getActivities,
   editActivity,
   deleteActivity,
+  insertInitialActivities,
 };

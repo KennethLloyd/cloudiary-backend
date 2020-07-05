@@ -1,17 +1,27 @@
 const mongoose = require('mongoose');
 
-const moodSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
+const { ObjectId } = mongoose.Schema.Types;
+
+const moodSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    icon: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    owner: {
+      type: ObjectId,
+      required: true,
+      ref: 'User',
+    },
   },
-  icon: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-});
+  { timestamps: true },
+);
 
 const Mood = mongoose.model('Mood', moodSchema);
 
