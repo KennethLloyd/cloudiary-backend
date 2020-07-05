@@ -27,7 +27,30 @@ const getMoods = async (req, res) => {
   }
 };
 
+const insertInitialMoods = async (userId) => {
+  const initialMoods = [
+    { name: 'fantastic', icon: '/fantastic.svg', owner: userId },
+    { name: 'good', icon: '/good.svg', owner: userId },
+    { name: 'meh', icon: '/meh.svg', owner: userId },
+    {
+      name: 'bad',
+      icon: '/bad.svg',
+      owner: userId,
+    },
+    { name: 'terrible', icon: '/terrible.svg', owner: userId },
+  ];
+
+  try {
+    const moods = await Mood.create(initialMoods);
+    return moods;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
+
 module.exports = {
   addMood,
   getMoods,
+  insertInitialMoods,
 };
