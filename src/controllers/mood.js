@@ -18,7 +18,7 @@ const addMood = async (req, res) => {
 
 const getMoods = async (req, res) => {
   try {
-    const moods = await Mood.find({});
+    const moods = await Mood.find({ owner: req.user._id });
 
     res.send(moods);
   } catch (e) {
