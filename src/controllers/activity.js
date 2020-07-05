@@ -13,19 +13,6 @@ const addActivity = async (req, res) => {
   }
 };
 
-const editActivity = async (req, res) => {
-  try {
-    const editedActivity = await Activity.findByIdAndUpdate(req.params.id, {
-      name: req.body.name,
-    });
-
-    res.send({ activity: editedActivity });
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ error: 'Internal Server Error' });
-  }
-};
-
 const getActivities = async (req, res) => {
   try {
     const activities = await Activity.find({});
@@ -37,8 +24,37 @@ const getActivities = async (req, res) => {
   }
 };
 
+const editActivity = async (req, res) => {
+  try {
+    const editedActivity = await Activity.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name,
+      },
+      { new: true },
+    );
+
+    res.send({ activity: editedActivity });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
+const deleteActivity = async (req, res) => {
+  try {
+    const deletedActivity = await Activity.findByIdAndDelete(req.params.id);
+
+    res.send({ activity: deletedActivity });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   addActivity,
-  editActivity,
   getActivities,
+  editActivity,
+  deleteActivity,
 };
