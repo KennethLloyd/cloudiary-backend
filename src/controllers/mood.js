@@ -30,15 +30,15 @@ const getMoods = async (req, res) => {
 
 const insertInitialMoods = async (userId) => {
   const initialMoods = [
-    { name: 'fantastic', icon: '/fantastic.svg', owner: userId },
-    { name: 'good', icon: '/good.svg', owner: userId },
-    { name: 'meh', icon: '/meh.svg', owner: userId },
+    { name: 'fantastic', icon: 'smile-beam', owner: userId },
+    { name: 'good', icon: 'smile', owner: userId },
+    { name: 'meh', icon: 'meh', owner: userId },
     {
       name: 'bad',
-      icon: '/bad.svg',
+      icon: 'frown',
       owner: userId,
     },
-    { name: 'terrible', icon: '/terrible.svg', owner: userId },
+    { name: 'terrible', icon: 'sad-tear', owner: userId },
   ];
 
   try {
