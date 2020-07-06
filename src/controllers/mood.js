@@ -28,17 +28,46 @@ const getMoods = async (req, res) => {
   }
 };
 
+const editMood = async (req, res) => {
+  try {
+    const editedMood = await Mood.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name,
+        icon: req.body.icon,
+      },
+      { new: true },
+    );
+
+    res.send({ mood: editedMood });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
+const deleteMood = async (req, res) => {
+  try {
+    const deletedMood = await Mood.findByIdAndDelete(req.params.id);
+
+    res.send({ mood: deletedMood });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
+
 const insertInitialMoods = async (userId) => {
   const initialMoods = [
-    { name: 'fantastic', icon: '/fantastic.svg', owner: userId },
-    { name: 'good', icon: '/good.svg', owner: userId },
-    { name: 'meh', icon: '/meh.svg', owner: userId },
+    { name: 'fantastic', icon: 'smile-beam', owner: userId },
+    { name: 'good', icon: 'smile', owner: userId },
+    { name: 'meh', icon: 'meh', owner: userId },
     {
       name: 'bad',
-      icon: '/bad.svg',
+      icon: 'frown',
       owner: userId,
     },
-    { name: 'terrible', icon: '/terrible.svg', owner: userId },
+    { name: 'terrible', icon: 'sad-tear', owner: userId },
   ];
 
   try {
@@ -53,5 +82,7 @@ const insertInitialMoods = async (userId) => {
 module.exports = {
   addMood,
   getMoods,
+  editMood,
+  deleteMood,
   insertInitialMoods,
 };
