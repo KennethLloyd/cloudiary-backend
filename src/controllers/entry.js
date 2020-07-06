@@ -77,7 +77,7 @@ const getEntries = async (req, res) => {
 
   try {
     const entries = await Entry.find(filter, projection, options)
-      .populate('mood', 'name')
+      .populate('mood', ['name', 'icon'])
       .populate('activities', 'name')
       .exec();
 
