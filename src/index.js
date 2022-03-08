@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-require('./db/mongoose'); // no variable because we just want the function to execute
+require('./db/mongoose'); // No variable because we just want the function to execute
 
 const app = express();
 const port = process.env.PORT || 3001;
