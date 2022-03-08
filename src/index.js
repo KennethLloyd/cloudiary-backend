@@ -5,7 +5,7 @@ require('./db/mongoose'); // no variable because we just want the function to ex
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(express.json()); // allows us to parse the request as json
+app.use(express.json()); // Allows us to parse the request as json
 app.use(cors());
 
 require('./routers')(app);
